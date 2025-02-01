@@ -9,7 +9,16 @@ interface DeviceStatsProps {
     type: string;
     lastUpdate: string;
     metrics: {
-      [key: string]: string;
+      battery?: string;
+      signal?: string;
+      storage?: string;
+      performance?: string;
+      temperature?: string;
+      uptime?: string;
+      lastCheck?: string;
+      issues?: string;
+      queue?: string;
+      [key: string]: string | undefined;
     };
   }[];
 }

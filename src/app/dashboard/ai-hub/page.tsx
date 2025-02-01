@@ -1,6 +1,6 @@
 "use client";
 
-import { BrainIcon, DatabaseIcon, Share2Icon, UsersIcon, LayersIcon, PlayCircleIcon } from "lucide-react";
+import { BrainIcon, DatabaseIcon, Share2Icon, LayersIcon, PlayCircleIcon } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Workspace } from "@/components/ai/workspace";
 import { Community } from "@/components/ai/community";

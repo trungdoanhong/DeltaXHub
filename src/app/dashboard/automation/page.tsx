@@ -1,5 +1,4 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { RobotIcon, ConveyorIcon, CameraIcon, GaugeIcon, BrainIcon, CodeIcon } from "@/components/icons";
 import { DeviceControl } from "@/components/automation/device-control";
 import { VisionSystem } from "@/components/automation/vision-system";
 import { Programming } from "@/components/automation/programming";

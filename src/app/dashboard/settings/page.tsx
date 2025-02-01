@@ -9,9 +9,7 @@ import {
   Mail,
   Globe,
   Moon,
-  Sun,
   Laptop,
-  Languages,
   KeyRound,
   LogOut,
   Settings2Icon
