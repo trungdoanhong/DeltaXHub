@@ -8,6 +8,8 @@ import {
   signOut,
   onAuthStateChanged,
   updateProfile,
+  GoogleAuthProvider,
+  signInWithPopup,
 } from 'firebase/auth';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 import { auth, db } from '@/lib/firebase';
@@ -17,7 +19,9 @@ interface AuthContextType {
   loading: boolean;
   signUp: (email: string, password: string, name: string) => Promise<void>;
   signIn: (email: string, password: string) => Promise<void>;
+  signInWithGoogle: () => Promise<void>;
   logout: () => Promise<void>;
+  updateUserProfile: (data: { displayName?: string; photoURL?: string }) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType>({} as AuthContextType);
@@ -36,6 +40,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           await setDoc(doc(db, 'users', user.uid), {
             email: user.email,
             name: user.displayName,
+            photoURL: user.photoURL,
             createdAt: new Date().toISOString(),
           });
         }
@@ -72,6 +77,39 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  const signInWithGoogle = async () => {
+    try {
+      const provider = new GoogleAuthProvider();
+      const { user } = await signInWithPopup(auth, provider);
+      const userDoc = await getDoc(doc(db, 'users', user.uid));
+      if (!userDoc.exists()) {
+        await setDoc(doc(db, 'users', user.uid), {
+          email: user.email,
+          name: user.displayName,
+          photoURL: user.photoURL,
+          createdAt: new Date().toISOString(),
+        });
+      }
+    } catch (error) {
+      console.error('Error in Google sign in:', error);
+      throw error;
+    }
+  };
+
+  const updateUserProfile = async (data: { displayName?: string; photoURL?: string }) => {
+    if (!user) return;
+    try {
+      await updateProfile(user, data);
+      await setDoc(doc(db, 'users', user.uid), {
+        ...data,
+        updatedAt: new Date().toISOString(),
+      }, { merge: true });
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      throw error;
+    }
+  };
+
   const logout = async () => {
     try {
       await signOut(auth);
@@ -82,7 +120,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, signUp, signIn, logout }}>
+    <AuthContext.Provider value={{ 
+      user, 
+      loading, 
+      signUp, 
+      signIn, 
+      signInWithGoogle,
+      logout,
+      updateUserProfile 
+    }}>
       {!loading && children}
     </AuthContext.Provider>
   );
