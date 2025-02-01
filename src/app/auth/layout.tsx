@@ -3,10 +3,8 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/auth-context';
-import { Sidebar } from '@/components/sidebar';
-import { Header } from '@/components/header';
 
-export default function DashboardLayout({
+export default function AuthLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -15,8 +13,8 @@ export default function DashboardLayout({
   const router = useRouter();
 
   useEffect(() => {
-    if (!loading && !user) {
-      router.push('/auth/login');
+    if (!loading && user) {
+      router.push('/dashboard');
     }
   }, [user, loading, router]);
 
@@ -28,19 +26,9 @@ export default function DashboardLayout({
     );
   }
 
-  if (!user) {
+  if (user) {
     return null;
   }
 
-  return (
-    <div className="flex h-screen overflow-hidden">
-      <Sidebar />
-      <div className="flex-1 flex flex-col">
-        <Header />
-        <main className="flex-1 overflow-y-auto">
-          {children}
-        </main>
-      </div>
-    </div>
-  );
+  return <>{children}</>;
 } 
