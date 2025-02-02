@@ -4,68 +4,64 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/contexts/auth-context';
-import {
-  LayoutDashboard,
-  Settings,
-  Bot,
-  Network,
-  Cpu,
-  Users,
+import { Button } from '@/components/ui/button';
+import { 
+  Bot, 
+  Cpu, 
+  Network, 
+  Users, 
+  Settings, 
   Key,
   User,
-  LogOut
+  LogOut,
+  Sun,
+  Moon
 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import Image from 'next/image';
+import { useTheme } from 'next-themes';
 
 const routes = [
-  {
-    label: 'Dashboard',
-    icon: LayoutDashboard,
-    href: '/dashboard',
-    color: 'text-sky-500',
-  },
   {
     label: 'AI Hub',
     icon: Bot,
     href: '/dashboard/ai-hub',
-    color: 'text-pink-700',
+    color: 'text-pink-500'
   },
   {
-    label: 'IoT',
+    label: 'IoT Platform',
     icon: Network,
     href: '/dashboard/iot',
-    color: 'text-orange-700',
+    color: 'text-orange-500'
   },
   {
     label: 'Automation',
     icon: Cpu,
     href: '/dashboard/automation',
-    color: 'text-emerald-500',
+    color: 'text-emerald-500'
   },
   {
     label: 'Community',
     icon: Users,
     href: '/dashboard/community',
-    color: 'text-green-700',
-  },
-  {
-    label: 'Settings',
-    icon: Settings,
-    href: '/dashboard/settings',
-    color: 'text-violet-500',
+    color: 'text-green-500'
   },
   {
     label: 'Licensing',
     icon: Key,
     href: '/dashboard/licensing',
-    color: 'text-blue-700',
+    color: 'text-blue-500'
   },
+  {
+    label: 'Settings',
+    icon: Settings,
+    href: '/dashboard/settings',
+    color: 'text-gray-500'
+  }
 ];
 
 export function Sidebar() {
   const pathname = usePathname();
   const { user, logout } = useAuth();
+  const { theme, setTheme } = useTheme();
 
   return (
     <div className="glass-effect h-full flex flex-col rounded-none">
@@ -105,38 +101,43 @@ export function Sidebar() {
             ))}
           </div>
         </div>
-      </div>
 
-      <div className="p-3 border-t border-border/40 space-y-2">
-        <Link href="/dashboard/profile">
-          <Button variant="ghost" className="w-full justify-start px-3 py-2 hover:bg-primary/10">
-            <div className="flex items-center">
-              {user?.photoURL ? (
-                <Image
-                  src={user.photoURL}
-                  alt={user.displayName || 'User'}
-                  width={24}
-                  height={24}
-                  className="h-6 w-6 rounded-full mr-3"
-                />
-              ) : (
-                <User className="h-5 w-5 mr-3 text-muted-foreground" />
-              )}
-              <div className="flex flex-col items-start">
-                <span className="text-sm font-medium text-foreground">{user?.displayName || 'User'}</span>
-                <span className="text-xs text-muted-foreground">{user?.email}</span>
-              </div>
-            </div>
+        <div className="px-3 py-2">
+          <Button 
+            variant="ghost" 
+            className="w-full justify-start"
+            onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+          >
+            {theme === 'light' ? (
+              <>
+                <Moon className="h-5 w-5 mr-3" />
+                Dark Mode
+              </>
+            ) : (
+              <>
+                <Sun className="h-5 w-5 mr-3" />
+                Light Mode
+              </>
+            )}
           </Button>
-        </Link>
-        <Button 
-          variant="ghost" 
-          className="w-full justify-start text-destructive hover:text-destructive hover:bg-destructive/10"
-          onClick={logout}
-        >
-          <LogOut className="mr-2 h-4 w-4" />
-          Log out
-        </Button>
+        </div>
+
+        <div className="p-3 border-t border-border/40 space-y-2">
+          <Link href="/dashboard/profile">
+            <Button variant="ghost" className="w-full justify-start">
+              <User className="h-5 w-5 mr-3" />
+              {user?.email}
+            </Button>
+          </Link>
+          <Button 
+            variant="ghost" 
+            className="w-full justify-start text-red-500 hover:text-red-500 hover:bg-red-500/10"
+            onClick={logout}
+          >
+            <LogOut className="h-5 w-5 mr-3" />
+            Đăng xuất
+          </Button>
+        </div>
       </div>
     </div>
   );
