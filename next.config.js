@@ -8,7 +8,6 @@ const nextConfig = {
     unoptimized: true
   },
   basePath: process.env.GITHUB_PAGES ? '/DeltaXHub' : '',
-  assetPrefix: process.env.GITHUB_PAGES ? '/DeltaXHub' : '',
   // Disable page prefetching to prevent .txt requests
   experimental: {
     prefetchRegex: false

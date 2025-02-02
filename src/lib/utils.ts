@@ -12,7 +12,9 @@ export function getBasePath() {
 
 export function createPath(path: string) {
   const basePath = getBasePath();
+  // Remove any existing basePath from the path to prevent duplication
+  const pathWithoutBase = path.replace(basePath, '');
   // Ensure path starts with / and remove any duplicate slashes
-  const cleanPath = path.startsWith('/') ? path : `/${path}`;
+  const cleanPath = pathWithoutBase.startsWith('/') ? pathWithoutBase : `/${pathWithoutBase}`;
   return `${basePath}${cleanPath}`.replace(/\/+/g, '/');
 } 
