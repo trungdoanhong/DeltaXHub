@@ -6,8 +6,8 @@ import { Providers } from './providers';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'DeltaX Hub - Industrial Automation Platform',
-  description: 'Nền tảng tự động hóa công nghiệp thông minh hàng đầu Việt Nam.',
+  title: 'DeltaX Hub',
+  description: 'Nền tảng tự động hóa công nghiệp thông minh',
 };
 
 export default function RootLayout({
@@ -16,9 +16,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="vi" suppressHydrationWarning>
+      <head>
+        <meta name="next-head-count" content="0" />
+        {/* Disable prefetching */}
+        <meta name="next-size-adjust" />
+      </head>
       <body className={inter.className}>
-        <Providers>{children}</Providers>
+        <Providers>
+          {children}
+        </Providers>
       </body>
     </html>
   );
