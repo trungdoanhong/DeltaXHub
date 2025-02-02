@@ -5,9 +5,8 @@ const nextConfig = {
   skipTrailingSlashRedirect: true,
   distDir: 'out',
   images: {
-    loader: 'custom',
-    loaderFile: './image-loader.js',
-  },
+    unoptimized: true
+  }
 };
 
 module.exports = nextConfig; 
