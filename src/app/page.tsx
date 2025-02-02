@@ -13,9 +13,9 @@ import {
 } from 'lucide-react';
 import { createPath } from '@/lib/utils';
 
-// Disable automatic static optimization
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+// Use static generation
+export const dynamic = 'force-static';
+export const revalidate = false;
 
 const features = [
   {

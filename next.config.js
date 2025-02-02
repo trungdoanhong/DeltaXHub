@@ -10,8 +10,7 @@ const nextConfig = {
   basePath: process.env.GITHUB_PAGES ? '/DeltaXHub' : '',
   // Disable page prefetching to prevent .txt requests
   experimental: {
-    prefetchRegex: false,
-    optimizePackageImports: ['@/components']
+    prefetchRegex: false
   },
   // Disable automatic static optimization
   staticPageGenerationTimeout: 0,
