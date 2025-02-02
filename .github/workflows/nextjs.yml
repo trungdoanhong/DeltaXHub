@@ -39,6 +39,10 @@ jobs:
           echo "NEXT_PUBLIC_FIREBASE_APP_ID=${{ secrets.FIREBASE_APP_ID }}" >> .env.local
           echo "NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID=${{ secrets.FIREBASE_MEASUREMENT_ID }}" >> .env.local
           echo "NEXT_PUBLIC_FIREBASE_DATABASE_URL=${{ secrets.FIREBASE_DATABASE_URL }}" >> .env.local
+      - name: Debug env file
+        run: |
+          echo "Checking .env.local file (with secrets masked):"
+          cat .env.local | sed 's/=.*$/=***/'
       - name: Restore cache
         uses: actions/cache@v3
         with:
