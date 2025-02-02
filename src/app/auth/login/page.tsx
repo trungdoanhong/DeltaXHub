@@ -10,6 +10,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { useForm } from 'react-hook-form';
 import { FirebaseError } from 'firebase/app';
 
+export const dynamic = 'force-dynamic';
+
 interface FormData {
   email: string;
   password: string;
@@ -32,10 +34,10 @@ export default function LoginPage() {
       setLoading(true);
       await signIn(data.email, data.password);
       router.push('/dashboard');
-    } catch (error: FirebaseError | unknown) {
+    } catch (error) {
       setError('root', {
         type: 'manual',
-        message: error instanceof FirebaseError ? error.message : 'Invalid email or password'
+        message: error instanceof Error ? error.message : 'Invalid email or password'
       });
     } finally {
       setLoading(false);
@@ -47,10 +49,10 @@ export default function LoginPage() {
       setLoading(true);
       await signInWithGoogle();
       router.push('/dashboard');
-    } catch (error: FirebaseError | unknown) {
+    } catch (error) {
       setError('root', {
         type: 'manual',
-        message: error instanceof FirebaseError ? error.message : 'Failed to sign in with Google'
+        message: error instanceof Error ? error.message : 'Failed to sign in with Google'
       });
     } finally {
       setLoading(false);

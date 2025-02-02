@@ -8,7 +8,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useForm } from 'react-hook-form';
-import { FirebaseError } from 'firebase/app';
+
+export const dynamic = 'force-dynamic';
 
 interface FormData {
   name: string;
@@ -43,10 +44,10 @@ export default function RegisterPage() {
       setLoading(true);
       await signUp(data.email, data.password, data.name);
       router.push('/dashboard');
-    } catch (error: FirebaseError | unknown) {
+    } catch (error) {
       setError('root', {
         type: 'manual',
-        message: error instanceof FirebaseError ? error.message : 'Failed to create account'
+        message: error instanceof Error ? error.message : 'Failed to create account'
       });
     } finally {
       setLoading(false);
