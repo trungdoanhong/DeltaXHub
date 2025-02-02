@@ -8,7 +8,7 @@ const nextConfig = {
     unoptimized: true
   },
   basePath: process.env.GITHUB_PAGES ? '/DeltaXHub' : '',
-  assetPrefix: process.env.GITHUB_PAGES ? '/DeltaXHub/' : ''
+  assetPrefix: process.env.GITHUB_PAGES ? '/DeltaXHub' : ''
 };
 
 // Inject basePath to process.env for client-side access
