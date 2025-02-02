@@ -12,6 +12,8 @@ import {
   Zap
 } from 'lucide-react';
 
+export const dynamic = 'force-static';
+
 const features = [
   {
     icon: Bot,
