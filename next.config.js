@@ -4,6 +4,9 @@ const nextConfig = {
   trailingSlash: true,
   skipTrailingSlashRedirect: true,
   distDir: 'out',
+  images: {
+    unoptimized: true,
+  },
 };
 
 module.exports = nextConfig; 
