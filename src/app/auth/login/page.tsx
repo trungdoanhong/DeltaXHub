@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useForm } from 'react-hook-form';
+import { FirebaseError } from 'firebase/app';
 
 interface FormData {
   email: string;
@@ -31,10 +32,10 @@ export default function LoginPage() {
       setLoading(true);
       await signIn(data.email, data.password);
       router.push('/dashboard');
-    } catch (error: any) {
+    } catch (error: FirebaseError | unknown) {
       setError('root', {
         type: 'manual',
-        message: error.message || 'Invalid email or password'
+        message: error instanceof FirebaseError ? error.message : 'Invalid email or password'
       });
     } finally {
       setLoading(false);
@@ -46,10 +47,10 @@ export default function LoginPage() {
       setLoading(true);
       await signInWithGoogle();
       router.push('/dashboard');
-    } catch (error: any) {
+    } catch (error: FirebaseError | unknown) {
       setError('root', {
         type: 'manual',
-        message: error.message || 'Failed to sign in with Google'
+        message: error instanceof FirebaseError ? error.message : 'Failed to sign in with Google'
       });
     } finally {
       setLoading(false);

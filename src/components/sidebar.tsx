@@ -112,9 +112,11 @@ export function Sidebar() {
           <Button variant="ghost" className="w-full justify-start px-3 py-2 hover:bg-primary/10">
             <div className="flex items-center">
               {user?.photoURL ? (
-                <img
+                <Image
                   src={user.photoURL}
                   alt={user.displayName || 'User'}
+                  width={24}
+                  height={24}
                   className="h-6 w-6 rounded-full mr-3"
                 />
               ) : (
