@@ -1,13 +1,13 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import { Providers } from '@/providers';
 import './globals.css';
+import { Providers } from './providers';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'DeltaX Hub - Industrial Automation Platform',
-  description: 'Advanced industrial automation platform for IoT, robotics, and AI',
+  description: 'Nền tảng tự động hóa công nghiệp thông minh hàng đầu Việt Nam.',
 };
 
 export default function RootLayout({

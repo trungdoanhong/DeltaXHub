@@ -3,12 +3,6 @@ const nextConfig = {
   output: 'export',
   images: {
     unoptimized: true,
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'firebasestorage.googleapis.com',
-      },
-    ],
   },
   env: {
     NEXT_PUBLIC_FIREBASE_API_KEY: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -21,6 +15,9 @@ const nextConfig = {
   },
   trailingSlash: true,
   skipTrailingSlashRedirect: true,
+  experimental: {
+    appDir: true,
+  },
 };
 
 module.exports = nextConfig; 
