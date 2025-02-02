@@ -9,15 +9,20 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useForm } from 'react-hook-form';
 
+interface FormData {
+  email: string;
+  password: string;
+}
+
 export default function LoginPage() {
   const {
     register,
     handleSubmit,
-    formState: { errors }
+    formState: { errors },
+    setError
   } = useForm<FormData>();
 
   const [loading, setLoading] = useState(false);
-
   const router = useRouter();
   const { signIn, signInWithGoogle } = useAuth();
 
@@ -27,7 +32,7 @@ export default function LoginPage() {
       await signIn(data.email, data.password);
       router.push('/dashboard');
     } catch (err) {
-      setError('auth', {
+      setError('root', {
         type: 'manual',
         message: 'Invalid email or password'
       });
@@ -41,8 +46,11 @@ export default function LoginPage() {
       setLoading(true);
       await signInWithGoogle();
       router.push('/dashboard');
-    } catch (error) {
-      setError('Failed to sign in with Google.');
+    } catch (err) {
+      setError('root', {
+        type: 'manual',
+        message: 'Failed to sign in with Google'
+      });
     } finally {
       setLoading(false);
     }
@@ -57,9 +65,9 @@ export default function LoginPage() {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            {errors.auth && (
+            {errors.root && (
               <div className="bg-red-50 text-red-500 p-3 rounded-md text-sm">
-                {errors.auth.message}
+                {errors.root.message}
               </div>
             )}
             <div className="space-y-2">
@@ -69,9 +77,17 @@ export default function LoginPage() {
               <Input
                 id="email"
                 type="email"
-                {...register('email')}
-                required
+                {...register('email', {
+                  required: 'Email is required',
+                  pattern: {
+                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                    message: 'Invalid email address'
+                  }
+                })}
               />
+              {errors.email && (
+                <p className="text-sm text-red-500">{errors.email.message}</p>
+              )}
             </div>
             <div className="space-y-2">
               <label htmlFor="password" className="text-sm font-medium">
@@ -80,9 +96,13 @@ export default function LoginPage() {
               <Input
                 id="password"
                 type="password"
-                {...register('password')}
-                required
+                {...register('password', {
+                  required: 'Password is required'
+                })}
               />
+              {errors.password && (
+                <p className="text-sm text-red-500">{errors.password.message}</p>
+              )}
             </div>
             <Button
               type="submit"
