@@ -6,15 +6,13 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function getBasePath() {
-  if (typeof window !== 'undefined') {
-    // Client-side
-    return process.env.NEXT_PUBLIC_BASE_PATH || '';
-  }
-  // Server-side
-  return process.env.GITHUB_PAGES ? '/DeltaXHub' : '';
+  // Always use NEXT_PUBLIC_BASE_PATH for consistency
+  return process.env.NEXT_PUBLIC_BASE_PATH || '';
 }
 
 export function createPath(path: string) {
   const basePath = getBasePath();
-  return `${basePath}${path}`;
+  // Ensure path starts with / and remove any duplicate slashes
+  const cleanPath = path.startsWith('/') ? path : `/${path}`;
+  return `${basePath}${cleanPath}`.replace(/\/+/g, '/');
 } 
