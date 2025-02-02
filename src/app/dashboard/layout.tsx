@@ -33,13 +33,19 @@ export default function DashboardLayout({
   }
 
   return (
-    <div className="flex h-screen overflow-hidden">
-      <Sidebar />
-      <div className="flex-1 flex flex-col">
-        <Header />
-        <main className="flex-1 overflow-y-auto">
-          {children}
-        </main>
+    <div className="min-h-screen bg-gradient-to-br from-background via-muted/50 to-background">
+      <div className="flex">
+        <div className="hidden md:block w-72 fixed inset-y-0">
+          <Sidebar />
+        </div>
+        <div className="flex-1 md:ml-72">
+          <div className="sticky top-0 z-10 bg-background/80 backdrop-blur-sm">
+            <Header />
+          </div>
+          <main className="p-6">
+            {children}
+          </main>
+        </div>
       </div>
     </div>
   );

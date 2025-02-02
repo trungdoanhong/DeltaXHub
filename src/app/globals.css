@@ -48,6 +48,9 @@
     --glass-background: rgba(255, 255, 255, 0.7);
     --glass-border: rgba(255, 255, 255, 0.18);
     --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+
+    /* Card effect */
+    --card-background: rgba(255, 255, 255, 0.9);
   }
  
   .dark {
@@ -91,6 +94,9 @@
     --glass-background: rgba(17, 25, 40, 0.7);
     --glass-border: rgba(255, 255, 255, 0.12);
     --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+
+    /* Dark card effect */
+    --card-background: rgba(17, 25, 40, 0.9);
   }
 }
 
@@ -106,9 +112,11 @@
 
 /* Neumorphic Card Styles */
 .card-neumorphic {
-  @apply bg-card rounded-xl;
+  @apply rounded-xl;
+  background: var(--card-background);
   box-shadow: var(--shadow-medium);
   transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
 }
 
 .card-neumorphic:hover {
@@ -118,9 +126,9 @@
 
 /* Glass Effect */
 .glass-effect {
-  @apply backdrop-blur-md;
+  @apply backdrop-blur-md border;
   background: var(--glass-background);
-  border: 1px solid var(--glass-border);
+  border-color: var(--glass-border);
   box-shadow: var(--glass-shadow);
 }
 

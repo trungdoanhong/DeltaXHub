@@ -28,33 +28,8 @@ const activities = [
 
 export function RecentActivities() {
   return (
-    <div className="space-y-8">
-      {activities.map((activity, index) => {
-        const Icon = activity.icon;
-        return (
-          <div key={index} className="flex items-start">
-            {activity.image ? (
-              <Avatar className="h-9 w-9">
-                <AvatarImage src={activity.image} alt={activity.name} />
-                <AvatarFallback>{activity.name[0]}</AvatarFallback>
-              </Avatar>
-            ) : (
-              <div className={`rounded-full p-2 bg-${activity.status === 'warning' ? 'yellow' : 'green'}-500/10`}>
-                <Icon className={`h-4 w-4 text-${activity.status === 'warning' ? 'yellow' : 'green'}-500`} />
-              </div>
-            )}
-            <div className="ml-4 space-y-1">
-              <p className="text-sm font-medium">{activity.name}</p>
-              <p className="text-sm text-muted-foreground">
-                {activity.message}
-              </p>
-              <p className="text-xs text-muted-foreground">
-                {activity.time}
-              </p>
-            </div>
-          </div>
-        );
-      })}
+    <div className="h-[200px] flex items-center justify-center text-muted-foreground">
+      Recent Activities (Coming Soon)
     </div>
   );
 } 
