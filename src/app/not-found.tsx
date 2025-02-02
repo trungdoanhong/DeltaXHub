@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 
 export const dynamic = 'force-static';
+export const revalidate = false;
 
 export default function NotFound() {
   return (
