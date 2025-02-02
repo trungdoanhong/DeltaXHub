@@ -7,30 +7,32 @@ import { useAuth } from '@/contexts/auth-context';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { useForm } from 'react-hook-form';
 
 export default function RegisterPage() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [error, setError] = useState('');
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm<FormData>();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { signUp } = useAuth();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (password !== confirmPassword) {
-      return setError('Passwords do not match');
-    }
-
+  const onSubmit = async (data: FormData) => {
     try {
-      setError('');
       setLoading(true);
-      await signUp(email, password, name);
+      await signUp(data.email, data.password);
       router.push('/dashboard');
-    } catch (error) {
-      setError('Failed to create an account. Please try again.');
+    } catch (err) {
+      setError('auth', {
+        type: 'manual',
+        message: 'Failed to create account'
+      });
     } finally {
       setLoading(false);
     }
@@ -44,10 +46,10 @@ export default function RegisterPage() {
           <CardDescription>Sign up for a new account</CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            {error && (
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            {errors.auth && (
               <div className="bg-red-50 text-red-500 p-3 rounded-md text-sm">
-                {error}
+                {errors.auth.message}
               </div>
             )}
             <div className="space-y-2">

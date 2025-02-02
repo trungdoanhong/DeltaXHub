@@ -6,22 +6,21 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { User, Mail, Camera } from 'lucide-react';
+import Image from 'next/image';
 
 export default function ProfilePage() {
   const { user, updateUserProfile, logout } = useAuth();
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
   const [name, setName] = useState(user?.displayName || '');
   const [photoURL, setPhotoURL] = useState(user?.photoURL || '');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      setError('');
       setLoading(true);
       await updateUserProfile({ displayName: name, photoURL });
-    } catch (error) {
-      setError('Failed to update profile.');
+    } catch (err) {
+      console.error('Error updating profile:', err);
     } finally {
       setLoading(false);
     }
@@ -40,36 +39,20 @@ export default function ProfilePage() {
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-6">
-                {error && (
-                  <div className="bg-red-50 text-red-500 p-3 rounded-md text-sm">
-                    {error}
-                  </div>
-                )}
-
                 <div className="flex items-center space-x-4">
-                  <div className="relative">
-                    {photoURL ? (
-                      <img
-                        src={photoURL}
-                        alt={name}
-                        className="w-20 h-20 rounded-full object-cover"
-                      />
-                    ) : (
-                      <div className="w-20 h-20 rounded-full bg-muted flex items-center justify-center">
-                        <User className="w-8 h-8 text-muted-foreground" />
-                      </div>
-                    )}
-                    <Button
-                      size="icon"
-                      variant="outline"
-                      className="absolute -bottom-2 -right-2 rounded-full w-8 h-8"
-                      onClick={() => {
-                        // Add image upload functionality here
-                      }}
-                    >
-                      <Camera className="w-4 h-4" />
-                    </Button>
-                  </div>
+                  {user?.photoURL ? (
+                    <Image
+                      src={user.photoURL}
+                      alt={user.displayName || 'User'}
+                      width={96}
+                      height={96}
+                      className="rounded-full"
+                    />
+                  ) : (
+                    <div className="w-24 h-24 rounded-full bg-muted flex items-center justify-center">
+                      <User className="w-12 h-12 text-muted-foreground" />
+                    </div>
+                  )}
                   <div className="flex-1">
                     <h3 className="font-medium">{name || 'User'}</h3>
                     <p className="text-sm text-muted-foreground flex items-center">
@@ -92,11 +75,11 @@ export default function ProfilePage() {
                 </div>
 
                 <div className="space-y-2">
-                  <label htmlFor="photo" className="text-sm font-medium">
+                  <label htmlFor="photoURL" className="text-sm font-medium">
                     Profile Photo URL
                   </label>
                   <Input
-                    id="photo"
+                    id="photoURL"
                     value={photoURL}
                     onChange={(e) => setPhotoURL(e.target.value)}
                     placeholder="Enter photo URL"

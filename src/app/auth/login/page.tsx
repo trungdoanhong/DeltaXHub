@@ -7,24 +7,30 @@ import { useAuth } from '@/contexts/auth-context';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { useForm } from 'react-hook-form';
 
 export default function LoginPage() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm<FormData>();
+
   const [loading, setLoading] = useState(false);
+
   const router = useRouter();
   const { signIn, signInWithGoogle } = useAuth();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const onSubmit = async (data: FormData) => {
     try {
-      setError('');
       setLoading(true);
-      await signIn(email, password);
+      await signIn(data.email, data.password);
       router.push('/dashboard');
-    } catch (error) {
-      setError('Failed to sign in. Please check your credentials.');
+    } catch (err) {
+      setError('auth', {
+        type: 'manual',
+        message: 'Invalid email or password'
+      });
     } finally {
       setLoading(false);
     }
@@ -32,7 +38,6 @@ export default function LoginPage() {
 
   const handleGoogleSignIn = async () => {
     try {
-      setError('');
       setLoading(true);
       await signInWithGoogle();
       router.push('/dashboard');
@@ -51,10 +56,10 @@ export default function LoginPage() {
           <CardDescription>Enter your credentials to access your account</CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            {error && (
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            {errors.auth && (
               <div className="bg-red-50 text-red-500 p-3 rounded-md text-sm">
-                {error}
+                {errors.auth.message}
               </div>
             )}
             <div className="space-y-2">
@@ -64,8 +69,7 @@ export default function LoginPage() {
               <Input
                 id="email"
                 type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                {...register('email')}
                 required
               />
             </div>
@@ -76,8 +80,7 @@ export default function LoginPage() {
               <Input
                 id="password"
                 type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                {...register('password')}
                 required
               />
             </div>
@@ -126,10 +129,10 @@ export default function LoginPage() {
               Sign in with Google
             </Button>
 
-            <p className="text-sm text-center text-muted-foreground">
-              Don't have an account?{' '}
+            <p className="text-center text-sm text-muted-foreground">
+              Don&apos;t have an account?{' '}
               <Link href="/auth/register" className="text-primary hover:underline">
-                Sign up
+                Register
               </Link>
             </p>
           </form>
