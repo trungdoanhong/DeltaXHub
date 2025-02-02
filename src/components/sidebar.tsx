@@ -16,6 +16,7 @@ import {
   LogOut
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import Image from 'next/image';
 
 const routes = [
   {
@@ -73,7 +74,7 @@ export function Sidebar() {
           <div className="w-8 h-8 rounded-xl bg-primary flex items-center justify-center">
             <span className="text-primary-foreground text-lg">D</span>
           </div>
-          <span className="text-xl font-bold">DeltaX Hub</span>
+          <span className="font-bold">DeltaX Hub</span>
         </Link>
       </div>
 

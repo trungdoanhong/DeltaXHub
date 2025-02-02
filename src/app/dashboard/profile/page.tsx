@@ -5,7 +5,7 @@ import { useAuth } from '@/contexts/auth-context';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { User, Mail, Camera } from 'lucide-react';
+import { User, Mail } from 'lucide-react';
 import Image from 'next/image';
 
 export default function ProfilePage() {

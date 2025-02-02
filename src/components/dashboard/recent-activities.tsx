@@ -1,35 +1,19 @@
 "use client";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { BellIcon, CheckIcon } from "lucide-react";
-
-const activities = [
-  {
-    name: "John Smith",
-    email: "john.smith@deltax.com",
-    image: "/avatars/default-avatar.svg",
-    message: "Started a new simulation",
-    time: "2 mins ago",
-    type: "notification",
-    icon: BellIcon,
-    status: "warning"
-  },
-  {
-    name: "Sarah Johnson",
-    email: "sarah.j@deltax.com",
-    image: "/avatars/default-avatar.svg",
-    message: "Completed AI model training",
-    time: "1 hour ago",
-    type: "success",
-    icon: CheckIcon,
-    status: "success"
-  }
-];
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 export function RecentActivities() {
   return (
-    <div className="h-[200px] flex items-center justify-center text-muted-foreground">
-      Recent Activities (Coming Soon)
-    </div>
+    <Card>
+      <CardHeader>
+        <CardTitle>Recent Activities</CardTitle>
+        <CardDescription>You have no recent activities</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-8">
+          {/* Activities will be added here */}
+        </div>
+      </CardContent>
+    </Card>
   );
 } 

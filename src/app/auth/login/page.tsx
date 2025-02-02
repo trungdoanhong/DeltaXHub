@@ -31,10 +31,10 @@ export default function LoginPage() {
       setLoading(true);
       await signIn(data.email, data.password);
       router.push('/dashboard');
-    } catch (err) {
+    } catch (error: any) {
       setError('root', {
         type: 'manual',
-        message: 'Invalid email or password'
+        message: error.message || 'Invalid email or password'
       });
     } finally {
       setLoading(false);
@@ -46,10 +46,10 @@ export default function LoginPage() {
       setLoading(true);
       await signInWithGoogle();
       router.push('/dashboard');
-    } catch (err) {
+    } catch (error: any) {
       setError('root', {
         type: 'manual',
-        message: 'Failed to sign in with Google'
+        message: error.message || 'Failed to sign in with Google'
       });
     } finally {
       setLoading(false);

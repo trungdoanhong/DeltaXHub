@@ -2,13 +2,13 @@
 
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 import { 
   Bot, 
   Cpu, 
   Network, 
   Users, 
   ArrowRight, 
-  CheckCircle2, 
   ExternalLink,
   BarChart3,
   Shield,
@@ -66,8 +66,8 @@ export default function HomePage() {
       {/* Header */}
       <header className="flex h-14 items-center justify-between px-4 border-b">
         <Link href="/" className="flex items-center space-x-2">
-          <div className="w-8 h-8 rounded-xl flex items-center justify-center">
-            <span className="text-primary text-lg font-bold">D</span>
+          <div className="w-8 h-8 rounded-xl bg-primary flex items-center justify-center">
+            <span className="text-primary-foreground text-lg">D</span>
           </div>
           <span className="text-xl font-bold">DeltaX Hub</span>
         </Link>

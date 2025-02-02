@@ -42,10 +42,10 @@ export default function RegisterPage() {
       setLoading(true);
       await signUp(data.email, data.password, data.name);
       router.push('/dashboard');
-    } catch (err) {
+    } catch (error: any) {
       setError('root', {
         type: 'manual',
-        message: 'Failed to create account'
+        message: error.message || 'Failed to create account'
       });
     } finally {
       setLoading(false);
