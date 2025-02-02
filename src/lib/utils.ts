@@ -6,19 +6,15 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function getBasePath() {
-  if (typeof window !== 'undefined') {
-    // Client-side
-    return window.location.pathname.startsWith('/DeltaXHub') ? '/DeltaXHub' : '';
-  }
-  // Server-side
-  return process.env.GITHUB_PAGES ? '/DeltaXHub' : '';
+  // Always use NEXT_PUBLIC_BASE_PATH for consistency
+  return process.env.NEXT_PUBLIC_BASE_PATH || '';
 }
 
 export function createPath(path: string) {
-  const basePath = getBasePath();
-  // Remove any existing basePath from the path to prevent duplication
-  const pathWithoutBase = path.replace(/^\/DeltaXHub/, '');
-  // Ensure path starts with / and remove any duplicate slashes
-  const cleanPath = pathWithoutBase.startsWith('/') ? pathWithoutBase : `/${pathWithoutBase}`;
-  return `${basePath}${cleanPath}`.replace(/\/+/g, '/');
+  // Remove leading slash if present
+  const cleanPath = path.startsWith('/') ? path.slice(1) : path;
+  // Get base path without trailing slash
+  const basePath = getBasePath().replace(/\/$/, '');
+  // Combine and ensure single leading slash
+  return basePath ? `/${basePath}/${cleanPath}` : `/${cleanPath}`;
 } 

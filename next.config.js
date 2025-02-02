@@ -4,8 +4,7 @@ const nextConfig = {
   trailingSlash: true,
   distDir: 'out',
   images: {
-    loader: 'custom',
-    loaderFile: './image-loader.js'
+    unoptimized: true
   },
   basePath: process.env.GITHUB_PAGES ? '/DeltaXHub' : ''
 };
