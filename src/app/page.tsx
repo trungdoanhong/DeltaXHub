@@ -13,10 +13,6 @@ import {
 } from 'lucide-react';
 import { createPath } from '@/lib/utils';
 
-// Use static generation
-export const dynamic = 'force-static';
-export const revalidate = false;
-
 const features = [
   {
     icon: Bot,
