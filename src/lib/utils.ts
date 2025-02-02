@@ -10,11 +10,14 @@ export function getBasePath() {
   return process.env.NEXT_PUBLIC_BASE_PATH || '';
 }
 
-export function createPath(path: string) {
-  // Remove leading slash if present
+export function createPath(path: string, isAbsolute = false) {
+  // If it's an absolute path, don't add basePath
+  if (isAbsolute) {
+    return path.startsWith('/') ? path : `/${path}`;
+  }
+
+  // For relative paths, add basePath
   const cleanPath = path.startsWith('/') ? path.slice(1) : path;
-  // Get base path without trailing slash
   const basePath = getBasePath().replace(/\/$/, '');
-  // Combine and ensure single leading slash
   return basePath ? `/${basePath}/${cleanPath}` : `/${cleanPath}`;
 } 

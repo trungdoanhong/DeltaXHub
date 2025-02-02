@@ -63,17 +63,17 @@ export default function HomePage() {
     <div className="flex min-h-screen flex-col">
       {/* Header */}
       <header className="flex h-14 items-center justify-between px-4 border-b">
-        <Link href={createPath('/')} className="flex items-center space-x-2">
+        <Link href={createPath('/', true)} className="flex items-center space-x-2">
           <div className="w-8 h-8 rounded-xl bg-primary flex items-center justify-center">
             <span className="text-primary-foreground text-lg">D</span>
           </div>
           <span className="text-xl font-bold">DeltaX Hub</span>
         </Link>
         <div className="flex items-center gap-4">
-          <Link href={createPath('/auth/login')}>
+          <Link href={createPath('/auth/login', true)}>
             <Button variant="ghost">Đăng nhập</Button>
           </Link>
-          <Link href={createPath('/auth/register')}>
+          <Link href={createPath('/auth/register', true)}>
             <Button>Dùng thử miễn phí</Button>
           </Link>
         </div>
@@ -92,12 +92,12 @@ export default function HomePage() {
             IoT và robot công nghiệp hàng đầu.
           </p>
           <div className="flex items-center justify-center gap-4">
-            <Link href={createPath('/auth/register')}>
+            <Link href={createPath('/auth/register', true)}>
               <Button size="lg" className="gap-2">
                 Bắt đầu ngay <ArrowRight className="w-4 h-4" />
               </Button>
             </Link>
-            <Link href={createPath('/dashboard/community')}>
+            <Link href={createPath('/dashboard/community', true)}>
               <Button variant="outline" size="lg" className="gap-2">
                 Khám phá cộng đồng <ExternalLink className="w-4 h-4" />
               </Button>
@@ -157,12 +157,12 @@ export default function HomePage() {
               Bắt đầu với DeltaX Hub ngay hôm nay và trải nghiệm sự khác biệt.
             </p>
             <div className="flex items-center justify-center gap-4">
-              <Link href={createPath('/auth/register')}>
+              <Link href={createPath('/auth/register', true)}>
                 <Button size="lg" variant="secondary" className="gap-2">
                   Dùng thử miễn phí <ArrowRight className="w-4 h-4" />
                 </Button>
               </Link>
-              <Link href={createPath('/dashboard/community')}>
+              <Link href={createPath('/dashboard/community', true)}>
                 <Button size="lg" variant="outline" className="gap-2 bg-transparent border-primary-foreground hover:bg-primary-foreground/10">
                   Tìm hiểu thêm <ExternalLink className="w-4 h-4" />
                 </Button>
@@ -176,7 +176,7 @@ export default function HomePage() {
       <footer className="py-12 px-4 border-t">
         <div className="max-w-6xl mx-auto grid md:grid-cols-4 gap-8">
           <div>
-            <Link href={createPath('/')} className="flex items-center space-x-2 mb-4">
+            <Link href={createPath('/', true)} className="flex items-center space-x-2 mb-4">
               <div className="w-8 h-8 rounded-xl flex items-center justify-center">
                 <span className="text-primary text-lg font-bold">D</span>
               </div>
@@ -189,28 +189,28 @@ export default function HomePage() {
           <div>
             <h4 className="font-semibold mb-4">Sản phẩm</h4>
             <ul className="space-y-2">
-              <li><Link href={createPath('/products/ai-hub')} className="text-muted-foreground hover:text-primary">AI Hub</Link></li>
-              <li><Link href={createPath('/products/iot-platform')} className="text-muted-foreground hover:text-primary">IoT Platform</Link></li>
-              <li><Link href={createPath('/products/automation')} className="text-muted-foreground hover:text-primary">Automation</Link></li>
-              <li><Link href={createPath('/products/community')} className="text-muted-foreground hover:text-primary">Community</Link></li>
+              <li><Link href={createPath('/products/ai-hub', true)} className="text-muted-foreground hover:text-primary">AI Hub</Link></li>
+              <li><Link href={createPath('/products/iot-platform', true)} className="text-muted-foreground hover:text-primary">IoT Platform</Link></li>
+              <li><Link href={createPath('/products/automation', true)} className="text-muted-foreground hover:text-primary">Automation</Link></li>
+              <li><Link href={createPath('/products/community', true)} className="text-muted-foreground hover:text-primary">Community</Link></li>
             </ul>
           </div>
           <div>
             <h4 className="font-semibold mb-4">Công ty</h4>
             <ul className="space-y-2">
-              <li><Link href={createPath('/about')} className="text-muted-foreground hover:text-primary">Về chúng tôi</Link></li>
-              <li><Link href={createPath('/blog')} className="text-muted-foreground hover:text-primary">Blog</Link></li>
-              <li><Link href={createPath('/careers')} className="text-muted-foreground hover:text-primary">Careers</Link></li>
-              <li><Link href={createPath('/contact')} className="text-muted-foreground hover:text-primary">Liên hệ</Link></li>
+              <li><Link href={createPath('/about', true)} className="text-muted-foreground hover:text-primary">Về chúng tôi</Link></li>
+              <li><Link href={createPath('/blog', true)} className="text-muted-foreground hover:text-primary">Blog</Link></li>
+              <li><Link href={createPath('/careers', true)} className="text-muted-foreground hover:text-primary">Careers</Link></li>
+              <li><Link href={createPath('/contact', true)} className="text-muted-foreground hover:text-primary">Liên hệ</Link></li>
             </ul>
           </div>
           <div>
             <h4 className="font-semibold mb-4">Hỗ trợ</h4>
             <ul className="space-y-2">
-              <li><Link href={createPath('/docs')} className="text-muted-foreground hover:text-primary">Tài liệu</Link></li>
-              <li><Link href={createPath('/guides')} className="text-muted-foreground hover:text-primary">Hướng dẫn</Link></li>
-              <li><Link href={createPath('/api')} className="text-muted-foreground hover:text-primary">API</Link></li>
-              <li><Link href={createPath('/status')} className="text-muted-foreground hover:text-primary">Status</Link></li>
+              <li><Link href={createPath('/docs', true)} className="text-muted-foreground hover:text-primary">Tài liệu</Link></li>
+              <li><Link href={createPath('/guides', true)} className="text-muted-foreground hover:text-primary">Hướng dẫn</Link></li>
+              <li><Link href={createPath('/api', true)} className="text-muted-foreground hover:text-primary">API</Link></li>
+              <li><Link href={createPath('/status', true)} className="text-muted-foreground hover:text-primary">Status</Link></li>
             </ul>
           </div>
         </div>
