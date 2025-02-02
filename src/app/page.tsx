@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 
 export const dynamic = 'force-static';
+export const revalidate = false;
 
 const features = [
   {
