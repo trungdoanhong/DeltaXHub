@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { collection, getDocs, getFirestore } from 'firebase/firestore';
-import { Shield, User, UserCog, Plus, Minus, DollarSign } from 'lucide-react';
+import { Shield, User, Plus, Minus, DollarSign } from 'lucide-react';
 import {
   Select,
   SelectContent,
@@ -16,6 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import Image from 'next/image';
 
 const availableRoles = ['Admin', 'Mod', 'Staff', 'Customer', 'User', 'R&D', 'Sales', 'Production'] as const;
 type Role = typeof availableRoles[number];
@@ -35,7 +36,7 @@ export default function UserManagementPage() {
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState<string | null>(null);
   const [creditAmounts, setCreditAmounts] = useState<{ [key: string]: string }>({});
-  const { user: currentUser, isAdmin, updateUserRoles, updateUserCredit } = useAuth();
+  const { user, isAdmin, updateUserRoles, updateUserCredit } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
@@ -166,10 +167,12 @@ export default function UserManagementPage() {
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-4">
                   {user.photoURL ? (
-                    <img
+                    <Image
                       src={user.photoURL}
                       alt={user.name || 'User'}
                       className="h-10 w-10 rounded-full"
+                      width={40}
+                      height={40}
                     />
                   ) : (
                     <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
