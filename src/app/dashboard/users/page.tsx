@@ -6,8 +6,9 @@ import { useAuth } from '@/contexts/auth-context';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
 import { collection, getDocs, getFirestore } from 'firebase/firestore';
-import { Shield, User, UserCog } from 'lucide-react';
+import { Shield, User, UserCog, Plus, Minus, DollarSign } from 'lucide-react';
 import {
   Select,
   SelectContent,
@@ -26,13 +27,15 @@ interface UserData {
   roles: Role[];
   photoURL?: string;
   createdAt: string;
+  credits: number;
 }
 
 export default function UserManagementPage() {
   const [users, setUsers] = useState<UserData[]>([]);
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState<string | null>(null);
-  const { user: currentUser, isAdmin, updateUserRoles } = useAuth();
+  const [creditAmounts, setCreditAmounts] = useState<{ [key: string]: string }>({});
+  const { user: currentUser, isAdmin, updateUserRoles, updateUserCredit } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
@@ -59,6 +62,7 @@ export default function UserManagementPage() {
             id: doc.id,
             ...data,
             roles: data.roles || ['User'],
+            credits: data.credits || 0,
           });
         });
 
@@ -103,6 +107,41 @@ export default function UserManagementPage() {
     }
   };
 
+  const handleCreditChange = (userId: string, value: string) => {
+    setCreditAmounts(prev => ({
+      ...prev,
+      [userId]: value.replace(/[^0-9-]/g, '') // Only allow numbers and minus sign
+    }));
+  };
+
+  const handleUpdateCredit = async (userId: string, operation: 'add' | 'subtract') => {
+    const amount = parseInt(creditAmounts[userId] || '0');
+    if (isNaN(amount) || amount <= 0) return;
+
+    try {
+      setUpdating(userId);
+      await updateUserCredit(userId, operation === 'add' ? amount : -amount);
+
+      // Update local state
+      setUsers(users.map(u => 
+        u.id === userId 
+          ? { ...u, credits: u.credits + (operation === 'add' ? amount : -amount) }
+          : u
+      ));
+
+      // Clear input
+      setCreditAmounts(prev => ({
+        ...prev,
+        [userId]: ''
+      }));
+    } catch (error) {
+      console.error('Error updating credits:', error);
+      alert(error instanceof Error ? error.message : 'Error updating credits');
+    } finally {
+      setUpdating(null);
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-96">
@@ -142,9 +181,15 @@ export default function UserManagementPage() {
                     <CardDescription>{user.email}</CardDescription>
                   </div>
                 </div>
-                {user.roles.includes('Admin') && (
-                  <Shield className="h-5 w-5 text-primary" />
-                )}
+                <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-2">
+                    <DollarSign className="h-5 w-5 text-green-500" />
+                    <span className="font-bold">{user.credits}</span>
+                  </div>
+                  {user.roles.includes('Admin') && (
+                    <Shield className="h-5 w-5 text-primary" />
+                  )}
+                </div>
               </div>
             </CardHeader>
             <CardContent>
@@ -185,6 +230,37 @@ export default function UserManagementPage() {
                         ))}
                     </SelectContent>
                   </Select>
+                </div>
+
+                <div>
+                  <div className="text-sm font-medium mb-2">Manage Credits</div>
+                  <div className="flex items-center gap-2">
+                    <Input
+                      type="text"
+                      placeholder="Amount"
+                      value={creditAmounts[user.id] || ''}
+                      onChange={(e) => handleCreditChange(user.id, e.target.value)}
+                      className="w-[120px]"
+                    />
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="gap-1"
+                      onClick={() => handleUpdateCredit(user.id, 'add')}
+                      disabled={updating === user.id || !creditAmounts[user.id]}
+                    >
+                      <Plus className="h-4 w-4" /> Add
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="gap-1"
+                      onClick={() => handleUpdateCredit(user.id, 'subtract')}
+                      disabled={updating === user.id || !creditAmounts[user.id]}
+                    >
+                      <Minus className="h-4 w-4" /> Subtract
+                    </Button>
+                  </div>
                 </div>
 
                 <div className="text-xs text-muted-foreground">

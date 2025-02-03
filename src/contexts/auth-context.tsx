@@ -14,7 +14,7 @@ import {
   signInWithPopup,
   Auth,
 } from 'firebase/auth';
-import { doc, getDoc, getFirestore, setDoc, Firestore } from 'firebase/firestore';
+import { doc, getDoc, getFirestore, setDoc, Firestore, collection, addDoc } from 'firebase/firestore';
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -37,6 +37,8 @@ interface AuthContextType {
   updateUserRoles: (userId: string, roles: string[]) => Promise<void>;
   getUserRoles: (userId: string) => Promise<string[]>;
   isAdmin: () => Promise<boolean>;
+  updateUserCredit: (userId: string, amount: number) => Promise<void>;
+  getUserCredit: (userId: string) => Promise<number>;
 }
 
 const AuthContext = createContext<AuthContextType>({} as AuthContextType);
@@ -100,6 +102,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         email,
         name,
         roles: ['User'],
+        credits: 100, // Default credits for new users
         createdAt: new Date().toISOString(),
       });
       await ensureAdminUser(user);
@@ -132,6 +135,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           name: user.displayName,
           photoURL: user.photoURL,
           roles: ['User'],
+          credits: 100, // Default credits for new users
           createdAt: new Date().toISOString(),
         });
       }
@@ -209,6 +213,57 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  const updateUserCredit = async (userId: string, amount: number) => {
+    if (!db || !user) return;
+    try {
+      const currentUserDoc = await getDoc(doc(db, 'users', user.uid));
+      const currentUserRoles = currentUserDoc.data()?.roles || [];
+      
+      if (!currentUserRoles.includes('Admin')) {
+        throw new Error('Only administrators can update user credits');
+      }
+
+      const userDoc = await getDoc(doc(db, 'users', userId));
+      const currentCredits = userDoc.data()?.credits || 0;
+      const newCredits = currentCredits + amount;
+
+      if (newCredits < 0) {
+        throw new Error('Credit balance cannot be negative');
+      }
+
+      await setDoc(doc(db, 'users', userId), {
+        credits: newCredits,
+        updatedAt: new Date().toISOString(),
+      }, { merge: true });
+
+      // Add credit transaction history
+      const transactionRef = collection(db, 'users', userId, 'creditHistory');
+      await addDoc(transactionRef, {
+        amount,
+        type: amount > 0 ? 'credit' : 'debit',
+        adminId: user.uid,
+        adminEmail: user.email,
+        timestamp: new Date().toISOString(),
+        balance: newCredits
+      });
+
+    } catch (error) {
+      console.error('Error updating user credits:', error);
+      throw error;
+    }
+  };
+
+  const getUserCredit = async (userId: string) => {
+    if (!db) return 0;
+    try {
+      const userDoc = await getDoc(doc(db, 'users', userId));
+      return userDoc.data()?.credits || 0;
+    } catch (error) {
+      console.error('Error getting user credits:', error);
+      return 0;
+    }
+  };
+
   return (
     <AuthContext.Provider value={{ 
       user, 
@@ -220,7 +275,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       updateUserProfile,
       updateUserRoles,
       getUserRoles,
-      isAdmin
+      isAdmin,
+      updateUserCredit,
+      getUserCredit
     }}>
       {!loading && children}
     </AuthContext.Provider>

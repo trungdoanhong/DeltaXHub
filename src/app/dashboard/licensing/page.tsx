@@ -4,13 +4,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { CreditCard, Key, Shield, Cpu, Smartphone, Settings2Icon, PlusCircle, RefreshCw } from "lucide-react";
-
-const creditStats = {
-  balance: "5,000",
-  used: "2,450",
-  rewards: "350",
-  percentage: 49
-};
+import { useAuth } from "@/contexts/auth-context";
+import { useEffect, useState } from "react";
 
 const licenses = [
   {
@@ -40,6 +35,35 @@ const identityInfo = {
 };
 
 export default function LicensingPage() {
+  const { user, getUserCredit } = useAuth();
+  const [credits, setCredits] = useState({
+    balance: 0,
+    used: 0,
+    rewards: 0,
+    percentage: 0
+  });
+
+  useEffect(() => {
+    const fetchCredits = async () => {
+      if (user) {
+        const balance = await getUserCredit(user.uid);
+        // For now, we'll set some placeholder values for used and rewards
+        const used = 0; // This will be implemented later
+        const rewards = 0; // This will be implemented later
+        const percentage = used > 0 ? Math.round((used / (used + balance)) * 100) : 0;
+        
+        setCredits({
+          balance,
+          used,
+          rewards,
+          percentage
+        });
+      }
+    };
+
+    fetchCredits();
+  }, [user, getUserCredit]);
+
   return (
     <div className="flex-1 space-y-8 p-8 pt-6">
       <div className="flex items-center justify-between">
@@ -66,11 +90,11 @@ export default function LicensingPage() {
           <div className="space-y-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-3xl font-bold">{creditStats.balance}</p>
+                <p className="text-3xl font-bold">{credits.balance}</p>
                 <p className="text-sm text-muted-foreground">Available Credits</p>
               </div>
               <div className="text-right">
-                <p className="text-xl font-semibold text-green-500">+{creditStats.rewards}</p>
+                <p className="text-xl font-semibold text-green-500">+{credits.rewards}</p>
                 <p className="text-sm text-muted-foreground">Reward Points</p>
               </div>
             </div>
@@ -78,9 +102,9 @@ export default function LicensingPage() {
             <div className="space-y-2">
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Credits Used</span>
-                <span className="font-medium">{creditStats.used}</span>
+                <span className="font-medium">{credits.used}</span>
               </div>
-              <Progress value={creditStats.percentage} className="h-2" />
+              <Progress value={credits.percentage} className="h-2" />
             </div>
 
             <div className="flex gap-3">
