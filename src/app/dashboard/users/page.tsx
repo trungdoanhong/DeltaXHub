@@ -36,7 +36,7 @@ export default function UserManagementPage() {
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState<string | null>(null);
   const [creditAmounts, setCreditAmounts] = useState<{ [key: string]: string }>({});
-  const { user, isAdmin, updateUserRoles, updateUserCredit } = useAuth();
+  const { isAdmin, updateUserRoles, updateUserCredit } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
