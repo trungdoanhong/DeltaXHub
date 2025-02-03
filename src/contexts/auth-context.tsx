@@ -34,6 +34,9 @@ interface AuthContextType {
   signInWithGoogle: () => Promise<void>;
   logout: () => Promise<void>;
   updateUserProfile: (data: { displayName?: string; photoURL?: string }) => Promise<void>;
+  updateUserRoles: (userId: string, roles: string[]) => Promise<void>;
+  getUserRoles: (userId: string) => Promise<string[]>;
+  isAdmin: () => Promise<boolean>;
 }
 
 const AuthContext = createContext<AuthContextType>({} as AuthContextType);
@@ -77,6 +80,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
+  // Add admin role to trungdoanhong@gmail.com during signup/signin
+  const ensureAdminUser = async (user: User) => {
+    if (!db) return;
+    if (user.email === 'trungdoanhong@gmail.com') {
+      const userRef = doc(db, 'users', user.uid);
+      await setDoc(userRef, {
+        roles: ['Admin']
+      }, { merge: true });
+    }
+  };
+
   const signUp = async (email: string, password: string, name: string) => {
     if (!auth || !db) return;
     try {
@@ -85,8 +99,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       await setDoc(doc(db, 'users', user.uid), {
         email,
         name,
+        roles: ['User'],
         createdAt: new Date().toISOString(),
       });
+      await ensureAdminUser(user);
     } catch (error) {
       console.error('Error in sign up:', error);
       throw error;
@@ -94,9 +110,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const signIn = async (email: string, password: string) => {
-    if (!auth) return;
+    if (!auth || !db) return;
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      const { user } = await signInWithEmailAndPassword(auth, email, password);
+      await ensureAdminUser(user);
     } catch (error) {
       console.error('Error in sign in:', error);
       throw error;
@@ -114,9 +131,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           email: user.email,
           name: user.displayName,
           photoURL: user.photoURL,
+          roles: ['User'],
           createdAt: new Date().toISOString(),
         });
       }
+      await ensureAdminUser(user);
     } catch (error) {
       console.error('Error in Google sign in:', error);
       throw error;
@@ -147,6 +166,49 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  const updateUserRoles = async (userId: string, roles: string[]) => {
+    if (!db || !user) return;
+    try {
+      const currentUserDoc = await getDoc(doc(db, 'users', user.uid));
+      const currentUserRoles = currentUserDoc.data()?.roles || [];
+      
+      if (!currentUserRoles.includes('Admin')) {
+        throw new Error('Only administrators can update user roles');
+      }
+
+      await setDoc(doc(db, 'users', userId), {
+        roles,
+        updatedAt: new Date().toISOString(),
+      }, { merge: true });
+    } catch (error) {
+      console.error('Error updating user roles:', error);
+      throw error;
+    }
+  };
+
+  const getUserRoles = async (userId: string) => {
+    if (!db) return [];
+    try {
+      const userDoc = await getDoc(doc(db, 'users', userId));
+      return userDoc.data()?.roles || [];
+    } catch (error) {
+      console.error('Error getting user roles:', error);
+      return [];
+    }
+  };
+
+  const isAdmin = async () => {
+    if (!user || !db) return false;
+    try {
+      const userDoc = await getDoc(doc(db, 'users', user.uid));
+      const roles = userDoc.data()?.roles || [];
+      return roles.includes('Admin');
+    } catch (error) {
+      console.error('Error checking admin status:', error);
+      return false;
+    }
+  };
+
   return (
     <AuthContext.Provider value={{ 
       user, 
@@ -155,7 +217,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       signIn, 
       signInWithGoogle,
       logout,
-      updateUserProfile 
+      updateUserProfile,
+      updateUserRoles,
+      getUserRoles,
+      isAdmin
     }}>
       {!loading && children}
     </AuthContext.Provider>
