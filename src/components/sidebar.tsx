@@ -97,62 +97,6 @@ const salesRoutes: RouteItem[] = [
     icon: ShoppingBag,
     href: '/dashboard/sales',
     color: 'text-yellow-700',
-    children: [
-      {
-        label: 'Dashboard',
-        icon: LayoutDashboard,
-        href: '/dashboard/sales',
-        color: 'text-yellow-700',
-      },
-      {
-        label: 'Orders',
-        icon: ClipboardList,
-        href: '/dashboard/sales/orders',
-        color: 'text-blue-700',
-      },
-      {
-        label: 'Customers',
-        icon: Users2,
-        href: '/dashboard/sales/customers',
-        color: 'text-green-700',
-      },
-      {
-        label: 'Products',
-        icon: Package,
-        href: '/dashboard/sales/products',
-        color: 'text-purple-700',
-      },
-      {
-        label: 'Leads',
-        icon: Target,
-        href: '/dashboard/sales/leads',
-        color: 'text-red-700',
-      },
-      {
-        label: 'Calendar',
-        icon: Calendar,
-        href: '/dashboard/sales/calendar',
-        color: 'text-orange-700',
-      },
-      {
-        label: 'Analytics',
-        icon: BarChart2,
-        href: '/dashboard/sales/analytics',
-        color: 'text-indigo-700',
-      },
-      {
-        label: 'Communication',
-        icon: MessageSquare,
-        href: '/dashboard/sales/communication',
-        color: 'text-pink-700',
-      },
-      {
-        label: 'Documents',
-        icon: FileText,
-        href: '/dashboard/sales/documents',
-        color: 'text-teal-700',
-      },
-    ]
   },
 ];
 

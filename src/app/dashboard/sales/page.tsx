@@ -6,6 +6,7 @@ import { useAuth } from '@/contexts/auth-context';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
+import Link from 'next/link';
 import {
   ShoppingCart,
   Package,
@@ -20,7 +21,13 @@ import {
   ShoppingBag,
   Truck,
   ArrowUpRight,
-  ArrowDownRight
+  ArrowDownRight,
+  ClipboardList,
+  Users2,
+  Target,
+  Calendar,
+  MessageSquare,
+  FileText
 } from "lucide-react";
 
 const salesStats = [
@@ -286,6 +293,137 @@ export default function SalesPage() {
             </div>
           </CardContent>
         </Card>
+      </div>
+
+      {/* Sales Features Navigation */}
+      <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-4">
+        <Link href="/dashboard/sales/orders">
+          <Card className="hover:bg-muted/50 transition-colors cursor-pointer">
+            <CardHeader>
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center">
+                  <ClipboardList className="w-4 h-4 text-blue-500" />
+                </div>
+                <div>
+                  <CardTitle className="text-lg">Orders</CardTitle>
+                  <CardDescription>Manage customer orders</CardDescription>
+                </div>
+              </div>
+            </CardHeader>
+          </Card>
+        </Link>
+
+        <Link href="/dashboard/sales/customers">
+          <Card className="hover:bg-muted/50 transition-colors cursor-pointer">
+            <CardHeader>
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-lg bg-green-500/10 flex items-center justify-center">
+                  <Users2 className="w-4 h-4 text-green-500" />
+                </div>
+                <div>
+                  <CardTitle className="text-lg">Customers</CardTitle>
+                  <CardDescription>Customer management</CardDescription>
+                </div>
+              </div>
+            </CardHeader>
+          </Card>
+        </Link>
+
+        <Link href="/dashboard/sales/products">
+          <Card className="hover:bg-muted/50 transition-colors cursor-pointer">
+            <CardHeader>
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-lg bg-purple-500/10 flex items-center justify-center">
+                  <Package className="w-4 h-4 text-purple-500" />
+                </div>
+                <div>
+                  <CardTitle className="text-lg">Products</CardTitle>
+                  <CardDescription>Product catalog</CardDescription>
+                </div>
+              </div>
+            </CardHeader>
+          </Card>
+        </Link>
+
+        <Link href="/dashboard/sales/leads">
+          <Card className="hover:bg-muted/50 transition-colors cursor-pointer">
+            <CardHeader>
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-lg bg-red-500/10 flex items-center justify-center">
+                  <Target className="w-4 h-4 text-red-500" />
+                </div>
+                <div>
+                  <CardTitle className="text-lg">Leads</CardTitle>
+                  <CardDescription>Lead management</CardDescription>
+                </div>
+              </div>
+            </CardHeader>
+          </Card>
+        </Link>
+
+        <Link href="/dashboard/sales/calendar">
+          <Card className="hover:bg-muted/50 transition-colors cursor-pointer">
+            <CardHeader>
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-lg bg-orange-500/10 flex items-center justify-center">
+                  <Calendar className="w-4 h-4 text-orange-500" />
+                </div>
+                <div>
+                  <CardTitle className="text-lg">Calendar</CardTitle>
+                  <CardDescription>Schedule management</CardDescription>
+                </div>
+              </div>
+            </CardHeader>
+          </Card>
+        </Link>
+
+        <Link href="/dashboard/sales/analytics">
+          <Card className="hover:bg-muted/50 transition-colors cursor-pointer">
+            <CardHeader>
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-lg bg-indigo-500/10 flex items-center justify-center">
+                  <BarChart3 className="w-4 h-4 text-indigo-500" />
+                </div>
+                <div>
+                  <CardTitle className="text-lg">Analytics</CardTitle>
+                  <CardDescription>Sales analytics</CardDescription>
+                </div>
+              </div>
+            </CardHeader>
+          </Card>
+        </Link>
+
+        <Link href="/dashboard/sales/communication">
+          <Card className="hover:bg-muted/50 transition-colors cursor-pointer">
+            <CardHeader>
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-lg bg-pink-500/10 flex items-center justify-center">
+                  <MessageSquare className="w-4 h-4 text-pink-500" />
+                </div>
+                <div>
+                  <CardTitle className="text-lg">Communication</CardTitle>
+                  <CardDescription>Team communication</CardDescription>
+                </div>
+              </div>
+            </CardHeader>
+          </Card>
+        </Link>
+
+        <Link href="/dashboard/sales/documents">
+          <Card className="hover:bg-muted/50 transition-colors cursor-pointer">
+            <CardHeader>
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-lg bg-teal-500/10 flex items-center justify-center">
+                  <FileText className="w-4 h-4 text-teal-500" />
+                </div>
+                <div>
+                  <CardTitle className="text-lg">Documents</CardTitle>
+                  <CardDescription>Document management</CardDescription>
+                </div>
+              </div>
+            </CardHeader>
+          </Card>
+        </Link>
       </div>
     </div>
   );

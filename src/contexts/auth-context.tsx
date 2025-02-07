@@ -15,6 +15,7 @@ import {
   Auth,
 } from 'firebase/auth';
 import { doc, getDoc, getFirestore, setDoc, Firestore, collection, addDoc } from 'firebase/firestore';
+import { auth, db } from '@/lib/firebase';
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
